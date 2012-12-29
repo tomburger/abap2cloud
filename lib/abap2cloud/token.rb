@@ -7,6 +7,7 @@ class Token
   SLASH = :token_slash
   PUNCTION = :token_punction
   EQUAL = :token_equal
+  COMMA = :token_comma
   
   attr_reader :kind, :value
   def initialize(kind, value='')

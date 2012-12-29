@@ -3,6 +3,7 @@ class Tokenizer
     lines.each do |l|
       word = ''
       string = false
+      expression = false
       l.chars do |c|
         if string
           if c.eql?('\'')
@@ -18,7 +19,7 @@ class Tokenizer
             word << c
           when /\s/
             if !word.empty?
-              if word =~ /^(\w+)$/
+              if word =~ /^\w([\w\-]*)$/
                 yield Token.new(Token::WORD, word.upcase)
               else
                 yield Token.new(Token::PUNCTION, word.upcase)
@@ -29,24 +30,36 @@ class Tokenizer
             string = true
           when '='
             yield Token.new(Token::EQUAL)
+            expression = true
           when '/'
             if !word.empty?
               yield Token.new(Token::WORD, word.upcase)
               word = ''
             end
-            yield Token.new(Token::SLASH)
+            if expression
+              yield Token.new(Token::PUNCTION, '/')
+            else
+              yield Token.new(Token::SLASH)
+            end
           when ':'
             if !word.empty?
               yield Token.new(Token::WORD, word.upcase)
               word = ''
             end
             yield Token.new(Token::COLLON)
+          when ','
+            if !word.empty?
+              yield Token.new(Token::WORD, word.upcase)
+              word = ''
+            end
+            yield Token.new(Token::COMMA)
           when '.'
             if !word.empty?
               yield Token.new(Token::WORD, word.upcase)
               word = ''
             end
             yield Token.new(Token::DOT)
+            expression = false
           end
         end
       end

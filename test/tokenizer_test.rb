@@ -32,12 +32,30 @@ class TokenizerTest < Test::Unit::TestCase
   end
   
   def test_write
-    call { |l| l << "write: / 'How are you?'." }
-    assert_equal 5, @tokens.size
+    call { |l| l << "write: / 'How are you?', X." }
+    assert_equal 7, @tokens.size
     assert_token 0, Token::WORD, 'WRITE'
     assert_token 1, Token::COLLON
     assert_token 2, Token::SLASH 
     assert_token 3, Token::STRING,'How are you?'
-    assert_token 4, Token::DOT
+    assert_token 4, Token::COMMA
+    assert_token 5, Token::WORD, 'X'
+    assert_token 6, Token::DOT
   end
+  
+  def test_expression
+    call { |l| l << "a = 1 + c-b - x / 2." }
+    assert_equal 10, @tokens.size
+    assert_token 0, Token::WORD, 'A'
+    assert_token 1, Token::EQUAL
+    assert_token 2, Token::WORD, '1'
+    assert_token 3, Token::PUNCTION, '+'
+    assert_token 4, Token::WORD, 'C-B'
+    assert_token 5, Token::PUNCTION, '-'
+    assert_token 6, Token::WORD, 'X'
+    assert_token 7, Token::PUNCTION, '/'
+    assert_token 8, Token::WORD, '2'
+    assert_token 9, Token::DOT
+  end
+  
 end
