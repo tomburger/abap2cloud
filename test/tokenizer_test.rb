@@ -67,6 +67,39 @@ class TokenizerTest < Test::Unit::TestCase
     assert_token 3, Token::WORD, 'I'
     assert_token 4, Token::DOT
   end
-    
+  
+  def test_open_string
+    assert_raise(RuntimeError) do
+      call { |l| l << "a = 'This string has no end" }
+    end
+  end
+  
+  def test_multiline_expression
+    call do |l|
+      l << "a = b"
+      l << "  + c"
+      l << "."
+    end
+    assert_equal 6, @tokens.size
+    assert_token 0, Token::WORD, 'A'
+    assert_token 1, Token::EQUAL
+    assert_token 2, Token::WORD, 'B'
+    assert_token 3, Token::PUNCTION, '+'
+    assert_token 4, Token::WORD, 'C'
+    assert_token 5, Token::DOT
+  end
+  def test_multiline_with_slash
+    call do |l|
+      l << "a = b /"
+      l << "  c."
+    end
+    assert_equal 6, @tokens.size
+    assert_token 0, Token::WORD, 'A'
+    assert_token 1, Token::EQUAL
+    assert_token 2, Token::WORD, 'B'
+    assert_token 3, Token::PUNCTION, '/'
+    assert_token 4, Token::WORD, 'C'
+    assert_token 5, Token::DOT
+  end
   
 end

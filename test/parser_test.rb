@@ -110,5 +110,23 @@ class ParserTest < Test::Unit::TestCase
       data a type i.
     EOF
     assert_equal "PROGRAM(TEST)[VAR(A,I)]", @result
+  end
+  
+  # negative tests...
+  def test_missing_dot
+    assert_raise(RuntimeError) do
+      call do |t|
+        t << Token.new(Token::WORD, 'PROGRAM') << Token.new(Token::WORD, 'TEST')
+      end
+    end
   end    
+  def test_unknown_command
+    assert_raise(RuntimeError) do
+      parse <<-EOF
+        program test.
+        one two three.
+      EOF
+    end
+  end
+  
 end

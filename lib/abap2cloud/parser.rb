@@ -4,9 +4,9 @@ class Parser
     tokens = remove_collons(tokens)
     token = tokens[0]
     if check(token, Token::WORD, 'PROGRAM')
-      tokens.shift  # remove keyword
+      remove(tokens, Token::WORD)
       c = CmdProgram.new(tokens.shift.value)
-      tokens.shift  # removes dot
+      remove(tokens, Token::DOT)
     else
       c = CmdProgram.new('STANDARD')
     end
@@ -24,32 +24,40 @@ class Parser
       token = tokens[0]
       case 
       when check(token, Token::WORD, 'WRITE')
-        tokens.shift # remove keyword
+        remove(tokens, Token::WORD)
         c = CmdWrite.new(tokens.shift)
-        tokens.shift  # removes dot
+        remove(tokens, Token::DOT)
         parent.add(c)
       when check(token, Token::WORD, 'START-OF-SELECTION')
         # skip this all together...
-        tokens.shift; tokens.shift
+        remove(tokens, Token::WORD)
+        remove(tokens, Token::DOT)
       when check(token, Token::WORD, 'END-OF-SELECTION')
-        tokens.shift; tokens.shift
+        # skip this all together...
+        remove(tokens, Token::WORD)
+        remove(tokens, Token::DOT)
       when check(token, Token::WORD, 'DATA')
-        tokens.shift
+        remove(tokens, Token::WORD)
         c = variable(tokens)
         parent.add(c)
       else
         if check(tokens[1], Token::EQUAL)
-          tokens.shift; tokens.shift
+          remove(tokens, Token::WORD)
+          remove(tokens, Token::EQUAL)
           c = expression(token.value, tokens)
           parent.add(c)
         else
-          # error!!!
+          raise "Unknown command #{token}"
         end
       end
     end
   end
   def self.check(token, kind, value='')
     token.kind == kind && token.value == value
+  end
+  def self.remove(tokens, kind)
+    token = tokens.shift
+    raise "Missing token #{kind}" if token == nil || token.kind != kind
   end
   def self.expression(target, tokens)
     c = CmdExpr.new(target)
@@ -60,10 +68,10 @@ class Parser
     return c
   end
   def self.variable(tokens)
-    v = tokens.shift  # variable
-    tokens.shift      # removing keyword TYPE
-    t = tokens.shift  # type
-    tokens.shift      # remove dot
+    v = tokens.shift             # variable
+    remove(tokens, Token::WORD)  # keyword TYPE
+    t = tokens.shift             # type
+    remove(tokens, Token::DOT)
     return CmdVar.new(v.value, t.value)
   end
   def self.remove_collons(old)
@@ -74,6 +82,7 @@ class Parser
       case c.kind
       when Token::DOT
         new.concat(intro).concat(cmd) << c
+        intro = []
         cmd = []
       when Token::COLLON
         intro = Array.new(cmd)
@@ -85,6 +94,8 @@ class Parser
         cmd << c
       end
     end
+    new.concat(intro) if !intro.empty?
+    new.concat(cmd) if !cmd.empty?
     return new
   end
 end

@@ -63,6 +63,11 @@ class Tokenizer
           end
         end
       end
+      raise "String is not terminated" if string
+      if !word.empty?
+        yield Token.new(Token::WORD, word.upcase)
+        word = ''
+      end
     end
   end
 end
