@@ -71,14 +71,23 @@ class ParserTest < Test::Unit::TestCase
       t << Token.new(Token::STRING, 'Hay How') << Token.new(Token::COMMA) 
       t << Token.new(Token::WORD, 'A-B') << Token.new(Token::DOT)
     end
-    assert_equal "PROGRAM(STANDARD)[WRITE 'Hay How',WRITE A-B]", @result
+    assert_equal "PROGRAM(STANDARD)[WRITE( 'Hay How' color= ),WRITE( A-B color= )]", @result
   end
+  def test_write_with_color
+    call do |t|
+      t << Token.new(Token::WORD, 'WRITE') 
+      t << Token.new(Token::SLASH) << Token.new(Token::STRING, 'Hey there.') 
+      t << Token.new(Token::WORD, 'COLOR') << Token.new(Token::WORD, 'COL_TOTAL') 
+      t << Token.new(Token::DOT)
+    end
+    assert_equal "PROGRAM(STANDARD)[WRITE( 'Hey there.' color=COL_TOTAL newline=true )]", @result
+  end    
   def test_program_with_write
     call do |t|
       t << Token.new(Token::WORD, 'PROGRAM') << Token.new(Token::WORD, 'TEST') << Token.new(Token::DOT) 
       t << Token.new(Token::WORD, 'WRITE') << Token.new(Token::STRING, 'Ha!') << Token.new(Token::DOT) 
     end
-    assert_equal "PROGRAM(TEST)[WRITE 'Ha!']", @result
+    assert_equal "PROGRAM(TEST)[WRITE( 'Ha!' color= )]", @result
   end
   def test_prog_structure
     call do |t|
@@ -102,7 +111,7 @@ class ParserTest < Test::Unit::TestCase
       a = b + c.
       write: x, y.
     EOF
-    assert_equal "PROGRAM(TEST)[EXPR(A,B + C),WRITE X,WRITE Y]", @result
+    assert_equal "PROGRAM(TEST)[EXPR(A,B + C),WRITE( X color= ),WRITE( Y color= )]", @result
   end
   def test_data_declaration
     parse <<-EOF

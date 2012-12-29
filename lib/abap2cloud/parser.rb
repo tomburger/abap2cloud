@@ -25,8 +25,7 @@ class Parser
       case 
       when check(token, Token::WORD, 'WRITE')
         remove(tokens, Token::WORD)
-        c = CmdWrite.new(tokens.shift)
-        remove(tokens, Token::DOT)
+        c = write(tokens)
         parent.add(c)
       when check(token, Token::WORD, 'START-OF-SELECTION')
         # skip this all together...
@@ -57,7 +56,8 @@ class Parser
   end
   def self.remove(tokens, kind)
     token = tokens.shift
-    raise "Missing token #{kind}" if token == nil || token.kind != kind
+    raise "Missing token #{kind}" if token == nil 
+    raise "Expecting #{kind}, but #{token} found" if token.kind != kind
   end
   def self.expression(target, tokens)
     c = CmdExpr.new(target)
@@ -73,6 +73,21 @@ class Parser
     t = tokens.shift             # type
     remove(tokens, Token::DOT)
     return CmdVar.new(v.value, t.value)
+  end
+  def self.write(tokens)
+    token = tokens.shift
+    if check(token, Token::SLASH)
+      c = CmdWrite.new(true, tokens.shift)
+    else
+      c = CmdWrite.new(false, token)
+    end
+    token = tokens[0]
+    if check(token, Token::WORD, 'COLOR')
+      remove(tokens, Token::WORD)
+      c.color = tokens.shift.value
+    end
+    remove(tokens, Token::DOT)
+    return c
   end
   def self.remove_collons(old)
     new = []

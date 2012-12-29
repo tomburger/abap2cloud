@@ -46,6 +46,14 @@ command :parse do |c|
   end
 end
 
+command :compile do |c|
+  c.action do |global,options,args|
+    tokens = []
+    Tokenizer.run(ArgfProcessor.new) { |t| tokens << t }
+    puts Parser.run(tokens).compile
+  end
+end
+
 post do |global,command,options,args|
   # Post logic here
   # Use skips_post before a command to skip this

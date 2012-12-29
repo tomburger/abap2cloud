@@ -5,6 +5,9 @@ class Command
   def print(pretty)
     @name
   end
+  def compile
+    return 'Java, here we go!!'
+  end
 end
 
 class CmdSequence < Command
@@ -20,6 +23,9 @@ class CmdSequence < Command
     seq = @commands.collect { |c| c.print(pretty) }.join(pretty ? "\n" : ',')
     return pretty ? "[\n#{seq}\n]" : "[#{seq}]"
   end
+  def compile
+    @commands.collect { |c| c.compile }.join("\n")
+  end
 end
 
 class CmdProgram < Command
@@ -33,23 +39,55 @@ class CmdProgram < Command
     s2 = @sequence.print(pretty)
     s1 + s2
   end
+  def compile
+    s = @sequence.compile
+    return <<-EOF
+    class Program extending ABAPProgram { 
+      void main(args) {
+        initialize();
+        run();
+      };
+      void run() {
+        #{s} 
+      };
+    }
+    EOF
+  end
   def add(cmd)
     @sequence.add(cmd)
   end
 end
 
 class CmdWrite < Command
-  def initialize(arg)
+  attr_writer :color
+  def initialize(newline, arg)
     super('WRITE')
     @arg = arg
+    @newline = newline
   end
   def print(pretty)
     s = super(pretty)
+    s << '('
     case @arg.kind
     when Token::STRING
       s << ' \'' << @arg.value << '\''
     when Token::WORD
       s << ' ' << @arg.value
+    end
+    s << " color=#{@color}"
+    s << " newline=true" if @newline
+    s << ' )'
+    return s
+  end
+  def compile
+    s = ''
+    s << "output.newline();\n" if @newline
+    s << "output.set_color('#{@color}');\n"
+    case @arg.kind
+    when Token::WORD
+      s << "output.writer(vars.evaluate('#{@arg.value}'));"
+    when Token::STRING
+      s << "output.writer('#{@arg.value}');"
     end
     return s
   end
@@ -69,6 +107,9 @@ class CmdExpr < Command
     exp = @expression.collect { |t| t.value }.join(' ')
     return "#{s}(#{@target},#{exp})"
   end
+  def compile
+    "vars.set('#{@target}',expr);"
+  end
 end
 
 class CmdVar < Command
@@ -80,5 +121,8 @@ class CmdVar < Command
   def print(pretty)
     s = super(pretty)
     return "#{s}(#{@var},#{@type})"
+  end
+  def compile
+    "vars.prepare('#{@var}','#{@type}');"
   end
 end
