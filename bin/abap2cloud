@@ -32,6 +32,12 @@ pre do |global,command,options,args|
   true
 end
 
+command :tokenize do |c|
+  c.action do |global,options,args|
+    Tokenizer.run(ArgfProcessor.new) { |t| puts t } 
+  end
+end
+
 post do |global,command,options,args|
   # Post logic here
   # Use skips_post before a command to skip this
