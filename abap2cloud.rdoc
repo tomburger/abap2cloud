@@ -1,0 +1,5 @@
+= abap2cloud
+
+Generate this with
+    abap2cloud rdoc
+After you have described your command line interface
