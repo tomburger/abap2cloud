@@ -1,4 +1,4 @@
 program TestOne.
 
-  write 'First Input ever'.
+  write: 'First Input ever', b-c.
 
