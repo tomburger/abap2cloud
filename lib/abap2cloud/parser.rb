@@ -8,13 +8,19 @@ class Parser
       c = CmdProgram.new(tokens.shift.value)
       tokens.shift  # removes dot
     else
-      c = CmdSequence.new
+      c = CmdProgram.new('STANDARD')
     end
     sequence(c, tokens)
     return c
   end
   def self.sequence(parent, tokens)
+    last_length = tokens.size + 1
     while !tokens.empty?
+
+      # invariant - with each loop, there is less tokens
+      raise "Seems like endless loop!" if tokens.size == last_length
+      last_length = tokens.size
+      
       token = tokens[0]
       case 
       when check(token, Token::WORD, 'WRITE')
@@ -27,6 +33,10 @@ class Parser
         tokens.shift; tokens.shift
       when check(token, Token::WORD, 'END-OF-SELECTION')
         tokens.shift; tokens.shift
+      when check(token, Token::WORD, 'DATA')
+        tokens.shift
+        c = variable(tokens)
+        parent.add(c)
       else
         if check(tokens[1], Token::EQUAL)
           tokens.shift; tokens.shift
@@ -48,6 +58,13 @@ class Parser
       c.add token
     end
     return c
+  end
+  def self.variable(tokens)
+    v = tokens.shift  # variable
+    tokens.shift      # removing keyword TYPE
+    t = tokens.shift  # type
+    tokens.shift      # remove dot
+    return CmdVar.new(v.value, t.value)
   end
   def self.remove_collons(old)
     new = []

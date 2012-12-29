@@ -58,4 +58,15 @@ class TokenizerTest < Test::Unit::TestCase
     assert_token 9, Token::DOT
   end
   
+  def test_variable
+    call { |l| l << "data a type i." }
+    assert_equal 5, @tokens.size
+    assert_token 0, Token::WORD, 'DATA'
+    assert_token 1, Token::WORD, 'A'
+    assert_token 2, Token::WORD, 'TYPE'
+    assert_token 3, Token::WORD, 'I'
+    assert_token 4, Token::DOT
+  end
+    
+  
 end

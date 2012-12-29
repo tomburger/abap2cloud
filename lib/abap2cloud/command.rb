@@ -70,3 +70,15 @@ class CmdExpr < Command
     return "#{s}(#{@target},#{exp})"
   end
 end
+
+class CmdVar < Command
+  def initialize(var, type)
+    super('VAR')
+    @var = var
+    @type = type
+  end
+  def print(pretty)
+    s = super(pretty)
+    return "#{s}(#{@var},#{@type})"
+  end
+end

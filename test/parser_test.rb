@@ -16,7 +16,13 @@ class ParserTest < Test::Unit::TestCase
   def call
     yield @tokens
     @result = Parser.run(@tokens).print(false)
-  end    
+  end  
+  def parse(prg)
+    prg_lines = []
+    prg_lines << prg
+    Tokenizer.run(prg_lines) { |t| @tokens << t }
+    @result = Parser.run(@tokens).print(false)
+  end
   def assert_token(ix, kind, value='')
     assert_equal kind, @tokens[ix].kind 
     assert_equal value, @tokens[ix].value
@@ -65,7 +71,7 @@ class ParserTest < Test::Unit::TestCase
       t << Token.new(Token::STRING, 'Hay How') << Token.new(Token::COMMA) 
       t << Token.new(Token::WORD, 'A-B') << Token.new(Token::DOT)
     end
-    assert_equal "[WRITE 'Hay How',WRITE A-B]", @result
+    assert_equal "PROGRAM(STANDARD)[WRITE 'Hay How',WRITE A-B]", @result
   end
   def test_program_with_write
     call do |t|
@@ -88,17 +94,21 @@ class ParserTest < Test::Unit::TestCase
       t << Token.new(Token::WORD, '1') << Token.new(Token::PUNCTION, '+')
       t << Token.new(Token::WORD, 'B-C') << Token.new(Token::DOT)
     end
-    assert_equal "[EXPR(A,1 + B-C)]", @result
+    assert_equal "PROGRAM(STANDARD)[EXPR(A,1 + B-C)]", @result
   end
   def test_simple_program
-    prg = []
-    prg << <<-EOF
+    parse <<-EOF
       program test.
       a = b + c.
       write: x, y.
     EOF
-    Tokenizer.run(prg) { |t| @tokens << t }
-    @result = Parser.run(@tokens).print(false)
     assert_equal "PROGRAM(TEST)[EXPR(A,B + C),WRITE X,WRITE Y]", @result
   end
+  def test_data_declaration
+    parse <<-EOF
+      program test.
+      data a type i.
+    EOF
+    assert_equal "PROGRAM(TEST)[VAR(A,I)]", @result
+  end    
 end
