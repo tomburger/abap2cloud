@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class ParserTest - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>test/parser_test.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-assert_token">#assert_token</a>
+    
+    <li><a href="#method-i-call">#call</a>
+    
+    <li><a href="#method-i-parse">#parse</a>
+    
+    <li><a href="#method-i-setup">#setup</a>
+    
+    <li><a href="#method-i-teardown">#teardown</a>
+    
+    <li><a href="#method-i-test_collons">#test_collons</a>
+    
+    <li><a href="#method-i-test_collons_with_slash">#test_collons_with_slash</a>
+    
+    <li><a href="#method-i-test_data_declaration">#test_data_declaration</a>
+    
+    <li><a href="#method-i-test_expression">#test_expression</a>
+    
+    <li><a href="#method-i-test_missing_dot">#test_missing_dot</a>
+    
+    <li><a href="#method-i-test_prog_structure">#test_prog_structure</a>
+    
+    <li><a href="#method-i-test_program_with_write">#test_program_with_write</a>
+    
+    <li><a href="#method-i-test_simple_program">#test_simple_program</a>
+    
+    <li><a href="#method-i-test_unknown_command">#test_unknown_command</a>
+    
+    <li><a href="#method-i-test_with_program">#test_with_program</a>
+    
+    <li><a href="#method-i-test_with_write">#test_with_write</a>
+    
+    <li><a href="#method-i-test_write_with_color">#test_write_with_color</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./abap2cloud_rdoc.html">abap2cloud</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Test.html">Test</a>
+  
+    <li><a href="./Test/Unit.html">Test::Unit</a>
+  
+    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  
+    <li><a href="./Abap2cloud.html">Abap2cloud</a>
+  
+    <li><a href="./ArgfProcessor.html">ArgfProcessor</a>
+  
+    <li><a href="./CmdExpr.html">CmdExpr</a>
+  
+    <li><a href="./CmdProgram.html">CmdProgram</a>
+  
+    <li><a href="./CmdSequence.html">CmdSequence</a>
+  
+    <li><a href="./CmdVar.html">CmdVar</a>
+  
+    <li><a href="./CmdWrite.html">CmdWrite</a>
+  
+    <li><a href="./Command.html">Command</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Parser.html">Parser</a>
+  
+    <li><a href="./ParserTest.html">ParserTest</a>
+  
+    <li><a href="./Token.html">Token</a>
+  
+    <li><a href="./Tokenizer.html">Tokenizer</a>
+  
+    <li><a href="./TokenizerTest.html">TokenizerTest</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class ParserTest</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-assert_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">assert_token</span><span
+            class="method-args">(ix, kind, value='')</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="assert_token-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">assert_token</span>(<span class="ruby-identifier">ix</span>, <span class="ruby-identifier">kind</span>, <span class="ruby-identifier">value</span>=<span class="ruby-string">''</span>)
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">kind</span>, <span class="ruby-ivar">@tokens</span>[<span class="ruby-identifier">ix</span>].<span class="ruby-identifier">kind</span> 
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-identifier">value</span>, <span class="ruby-ivar">@tokens</span>[<span class="ruby-identifier">ix</span>].<span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- assert_token-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- assert_token-method -->
+
+    
+      <div id="method-i-call" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call</span><span
+            class="method-args">() { |tokens| ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="call-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call</span>
+  <span class="ruby-keyword">yield</span> <span class="ruby-ivar">@tokens</span>
+  <span class="ruby-ivar">@result</span> = <span class="ruby-constant">Parser</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@tokens</span>).<span class="ruby-identifier">print</span>(<span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- call-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- call-method -->
+
+    
+      <div id="method-i-parse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse</span><span
+            class="method-args">(prg)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">prg</span>)
+  <span class="ruby-identifier">prg_lines</span> = []
+  <span class="ruby-identifier">prg_lines</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">prg</span>
+  <span class="ruby-constant">Tokenizer</span>.<span class="ruby-identifier">run</span>(<span class="ruby-identifier">prg_lines</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span> }
+  <span class="ruby-ivar">@result</span> = <span class="ruby-constant">Parser</span>.<span class="ruby-identifier">run</span>(<span class="ruby-ivar">@tokens</span>).<span class="ruby-identifier">print</span>(<span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- parse-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- parse-method -->
+
+    
+      <div id="method-i-setup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="setup-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
+  <span class="ruby-ivar">@tokens</span> = []
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- setup-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- setup-method -->
+
+    
+      <div id="method-i-teardown" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">teardown</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="teardown-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- teardown-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- teardown-method -->
+
+    
+      <div id="method-i-test_collons" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_collons</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_collons-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_collons</span>
+  <span class="ruby-comment"># WRITE: A, B. ==&gt; WRITE A. WRITE B.</span>
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COLLON</span>)
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMA</span>)
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'B'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-ivar">@tokens</span> = <span class="ruby-constant">Parser</span>.<span class="ruby-identifier">remove_collons</span>(<span class="ruby-ivar">@tokens</span>)
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-value">6</span>, <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">size</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">0</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">1</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">2</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">3</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">4</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'B'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">5</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_collons-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_collons-method -->
+
+    
+      <div id="method-i-test_collons_with_slash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_collons_with_slash</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_collons_with_slash-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_collons_with_slash</span>
+  <span class="ruby-comment"># WRITE: / A, B. ==&gt; WRITE / A. WRITE B.</span>
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COLLON</span>)
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">SLASH</span>)
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMA</span>)
+  <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'B'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-ivar">@tokens</span> = <span class="ruby-constant">Parser</span>.<span class="ruby-identifier">remove_collons</span>(<span class="ruby-ivar">@tokens</span>)
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-value">7</span>, <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">size</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">0</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">1</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">SLASH</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">2</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">3</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">4</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">5</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'B'</span>
+  <span class="ruby-identifier">assert_token</span> <span class="ruby-value">6</span>, <span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_collons_with_slash-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_collons_with_slash-method -->
+
+    
+      <div id="method-i-test_data_declaration" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_data_declaration</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_data_declaration-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 116</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">test_data_declaration</span>
+    <span class="ruby-identifier">parse</span> <span class="ruby-string">&quot;      program test.
+      data a type i.
+&quot;</span>
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(TEST)[VAR(A,I)]&quot;</span>, <span class="ruby-ivar">@result</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div><!-- test_data_declaration-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_data_declaration-method -->
+
+    
+      <div id="method-i-test_expression" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_expression</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_expression-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_expression</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">EQUAL</span>)
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'1'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">PUNCTION</span>, <span class="ruby-string">'+'</span>)
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'B-C'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(STANDARD)[EXPR(A,1 + B-C)]&quot;</span>, <span class="ruby-ivar">@result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_expression-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_expression-method -->
+
+    
+      <div id="method-i-test_missing_dot" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_missing_dot</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>negative tests…</p>
+          
+
+          
+          <div class="method-source-code" id="test_missing_dot-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_missing_dot</span>
+  <span class="ruby-identifier">assert_raise</span>(<span class="ruby-constant">RuntimeError</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'PROGRAM'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'TEST'</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_missing_dot-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_missing_dot-method -->
+
+    
+      <div id="method-i-test_prog_structure" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_prog_structure</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_prog_structure-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_prog_structure</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'PROGRAM'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'TEST'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'START-OF-SELECTION'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'END-OF-SELECTION'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(TEST)&quot;</span>, <span class="ruby-ivar">@result</span> <span class="ruby-comment"># events safely ignored...</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_prog_structure-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_prog_structure-method -->
+
+    
+      <div id="method-i-test_program_with_write" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_program_with_write</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_program_with_write-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_program_with_write</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'PROGRAM'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'TEST'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">STRING</span>, <span class="ruby-string">'Ha!'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(TEST)[WRITE( 'Ha!' color= )]&quot;</span>, <span class="ruby-ivar">@result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_program_with_write-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_program_with_write-method -->
+
+    
+      <div id="method-i-test_simple_program" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_simple_program</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_simple_program-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 108</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">test_simple_program</span>
+    <span class="ruby-identifier">parse</span> <span class="ruby-string">&quot;      program test.
+      a = b + c.
+      write: x, y.
+&quot;</span>
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(TEST)[EXPR(A,B + C),WRITE( X color= ),WRITE( Y color= )]&quot;</span>, <span class="ruby-ivar">@result</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div><!-- test_simple_program-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_simple_program-method -->
+
+    
+      <div id="method-i-test_unknown_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_unknown_command</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_unknown_command-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 132</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">test_unknown_command</span>
+    <span class="ruby-identifier">assert_raise</span>(<span class="ruby-constant">RuntimeError</span>) <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">parse</span> <span class="ruby-string">&quot;        program test.
+        one two three.
+&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div><!-- test_unknown_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_unknown_command-method -->
+
+    
+      <div id="method-i-test_with_program" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_with_program</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_with_program-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_with_program</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'PROGRAM'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'TEST'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">'PROGRAM(TEST)'</span>, <span class="ruby-ivar">@result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_with_program-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_with_program-method -->
+
+    
+      <div id="method-i-test_with_write" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_with_write</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_with_write-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_with_write</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COLLON</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">STRING</span>, <span class="ruby-string">'Hay How'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMA</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'A-B'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(STANDARD)[WRITE( 'Hay How' color= ),WRITE( A-B color= )]&quot;</span>, <span class="ruby-ivar">@result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_with_write-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_with_write-method -->
+
+    
+      <div id="method-i-test_write_with_color" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_write_with_color</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="test_write_with_color-source">
+            <pre><span class="ruby-comment"># File test/parser_test.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_write_with_color</span>
+  <span class="ruby-identifier">call</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'WRITE'</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">SLASH</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">STRING</span>, <span class="ruby-string">'Hey there.'</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'COLOR'</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">WORD</span>, <span class="ruby-string">'COL_TOTAL'</span>) 
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Token</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Token</span><span class="ruby-operator">::</span><span class="ruby-constant">DOT</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">assert_equal</span> <span class="ruby-string">&quot;PROGRAM(STANDARD)[WRITE( 'Hey there.' color=COL_TOTAL newline=true )]&quot;</span>, <span class="ruby-ivar">@result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_write_with_color-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_write_with_color-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
