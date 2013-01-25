@@ -4,7 +4,7 @@ class Parser
     tokens = remove_collons(tokens)
     token = tokens[0]
     if check(token, Token::WORD, 'PROGRAM')
-      remove(tokens, Token::WORD)
+      remove(tokens, Token::WORD, 'PROGRAM')
       c = CmdProgram.new(tokens.shift.value)
       remove(tokens, Token::DOT)
     else
@@ -38,28 +38,28 @@ class Parser
       token = tokens[0]
       case 
       when check(token, Token::WORD, 'WRITE')
-        remove(tokens, Token::WORD)
+        remove(tokens, Token::WORD, 'WRITE')
         c = write(tokens)
         parent.add(c)
       when check(token, Token::WORD, 'START-OF-SELECTION')
         # skip this all together...
-        remove(tokens, Token::WORD)
+        remove(tokens, Token::WORD, 'START-OF-SELECTION')
         remove(tokens, Token::DOT)
       when check(token, Token::WORD, 'END-OF-SELECTION')
         # skip this all together...
-        remove(tokens, Token::WORD)
+        remove(tokens, Token::WORD, 'END-OF-SELECTION')
         remove(tokens, Token::DOT)
       when check(token, Token::WORD, 'DATA')
-        remove(tokens, Token::WORD)
+        remove(tokens, Token::WORD, 'DATA')
         c = variable(tokens)
         parent.add(c)
       when check(token, Token::WORD, 'IF')
-        remove(tokens, Token::WORD)
+        remove(tokens, Token::WORD, 'IF')
         c = if_command(tokens)
         parent.add(c)
       else
         if check(tokens[1], Token::EQUAL)
-          remove(tokens, Token::WORD)
+          remove(tokens, Token::WORD, token.value)
           remove(tokens, Token::EQUAL)
           c = compute(token.value, tokens)
           parent.add(c)
@@ -73,28 +73,43 @@ class Parser
   def self.check(token, kind, value='')
     token.kind == kind && token.value == value
   end
-  def self.remove(tokens, kind)
+  def self.remove(tokens, kind, value=nil)
     token = tokens.shift
-    raise "Missing token #{kind}" if token == nil 
+    raise "Missing token #{kind}" if token.nil? 
     raise "Expecting #{kind}, but #{token} found" if token.kind != kind
+    raise "Expecting #{value}, but #{token.value} found" if !value.nil? && value != token.value
   end
-  def self.expression(tokens)
+  def self.until_dot(tokens)
     a = []
     while token = tokens.shift
       break if token.kind == Token::DOT
       a << token
     end
-    CmdExpression.new(a)
+    a
+  end
+  def self.expression(tokens)
+    CmdExpression.new(until_dot(tokens))
   end
   def self.compute(target, tokens)
     CmdCompute.new(target, expression(tokens))
   end
+  def self.type(tokens)
+    table = nil
+    token = tokens.shift
+    if (check(token, Token::WORD, 'STANDARD'))
+      table = CmdType::STD
+      remove(tokens, Token::WORD, 'TABLE')
+      remove(tokens, Token::WORD, 'OF')
+      token = tokens.shift
+    end
+    remove(tokens, Token::DOT)
+    CmdType.new(table, token.value)
+  end
   def self.variable(tokens)
     v = tokens.shift             # variable
-    remove(tokens, Token::WORD)  # keyword TYPE
-    t = tokens.shift             # type
-    remove(tokens, Token::DOT)
-    return CmdVar.new(v.value, t.value)
+    remove(tokens, Token::WORD, 'TYPE')  # keyword TYPE
+    t = type(tokens)             
+    return CmdVar.new(v.value, t)
   end
   def self.write(tokens)
     token = tokens.shift
@@ -105,7 +120,7 @@ class Parser
     end
     token = tokens[0]
     if check(token, Token::WORD, 'COLOR')
-      remove(tokens, Token::WORD)
+      remove(tokens, Token::WORD, 'COLOR')
       c.color = tokens.shift.value
     end
     remove(tokens, Token::DOT)

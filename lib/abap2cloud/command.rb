@@ -187,6 +187,27 @@ class CmdIf < Command
   end
 end
 
+class CmdType < Command
+  STD = :table_std
+  
+  def initialize(table, name)
+    super('TYPE')
+    @table = table
+    @name = name
+  end
+  def print(pretty)
+    if @table.nil? 
+      @name
+    else
+      case @table
+      when STD
+        tab = 'STD'
+      end
+      "TABLE(#{tab},#{@name})"
+    end
+  end
+end
+
 class CmdVar < Command
   def initialize(var, type)
     super('VAR')
@@ -195,7 +216,7 @@ class CmdVar < Command
   end
   def print(pretty)
     s = super(pretty)
-    return "#{s}(#{@var},#{@type})"
+    return "#{s}(#{@var},#{@type.print(pretty)})"
   end
   def compile
     "$#{@var} = 0;"

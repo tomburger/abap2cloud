@@ -120,6 +120,13 @@ class ParserTest < Test::Unit::TestCase
     EOF
     assert_equal "PROGRAM(TEST)[VAR(A,I)]", @result
   end
+  def test_table_declaration
+    parse <<-EOF
+      program test.
+      data t type standard table of i.
+    EOF
+    assert_equal "PROGRAM(TEST)[VAR(T,TABLE(STD,I))]", @result
+  end
   def test_parse_if
     parse <<-EOF
       program test.
