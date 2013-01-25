@@ -1,4 +1,11 @@
 class Tokenizer
+  def self.add(word)
+    if word =~ /^\d+(\.\d+)?$/
+      Token.new(Token::NUMBER, word)
+    else
+      Token.new(Token::WORD, word.upcase)
+    end
+  end
   def self.run(lines)
     lines.each do |l|
       word = ''
@@ -20,7 +27,7 @@ class Tokenizer
           when /\s/
             if !word.empty?
               if word =~ /^\w([\w\-]*)$/
-                yield Token.new(Token::WORD, word.upcase)
+                yield add word 
               else
                 yield Token.new(Token::PUNCTION, word.upcase)
               end
@@ -33,7 +40,7 @@ class Tokenizer
             expression = true
           when '/'
             if !word.empty?
-              yield Token.new(Token::WORD, word.upcase)
+              yield add word 
               word = ''
             end
             if expression
@@ -43,19 +50,19 @@ class Tokenizer
             end
           when ':'
             if !word.empty?
-              yield Token.new(Token::WORD, word.upcase)
+              yield add word 
               word = ''
             end
             yield Token.new(Token::COLLON)
           when ','
             if !word.empty?
-              yield Token.new(Token::WORD, word.upcase)
+              yield add word 
               word = ''
             end
             yield Token.new(Token::COMMA)
           when '.'
             if !word.empty?
-              yield Token.new(Token::WORD, word.upcase)
+              yield add word 
               word = ''
             end
             yield Token.new(Token::DOT)
@@ -65,7 +72,7 @@ class Tokenizer
       end
       raise "String is not terminated" if string
       if !word.empty?
-        yield Token.new(Token::WORD, word.upcase)
+        yield add word 
         word = ''
       end
     end

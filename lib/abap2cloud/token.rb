@@ -2,6 +2,7 @@ class Token
   
   DOT = :token_dot
   WORD = :token_word
+  NUMBER = :token_number
   STRING = :token_string
   COLLON = :token_collon
   SLASH = :token_slash

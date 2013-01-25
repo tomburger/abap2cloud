@@ -6,7 +6,7 @@ class Command
     @name
   end
   def compile
-    return 'Java, here we go!!'
+    return 'PHP, here we go!!'
   end
 end
 
@@ -23,8 +23,8 @@ class CmdSequence < Command
     seq = @commands.collect { |c| c.print(pretty) }.join(pretty ? "\n" : ',')
     return pretty ? "[\n#{seq}\n]" : "[#{seq}]"
   end
-  def compile
-    @commands.collect { |c| c.compile }.join("\n")
+  def compile(spool)
+    @commands.collect { |c| c.compile(spool) }.join("\n")
   end
 end
 
@@ -40,18 +40,29 @@ class CmdProgram < Command
     s1 + s2
   end
   def compile
-    s = @sequence.compile
+    spool = []
+    s = @sequence.compile spool
     return <<-EOF
-    class Program extending ABAPProgram { 
-      void main(args) {
-        initialize();
-        run();
-      };
-      void run() {
-        #{s} 
-      };
-    }
-    EOF
+<?php
+      #{s}
+      ?><html><head>
+      <title>ABAP-to-Cloud</title>
+      <style>
+      .write { font-family: Courier; border: 1px solid black; background-color: silver; }
+      </style>
+      </head>
+      <body>
+      <h1>ABAP-to-Cloud</h1>
+      <hr/>
+      <div class="write">
+      #{spool.join("\n")}
+      </div>
+      </body>
+      </html>
+      <?
+
+?>
+EOF
   end
   def add(cmd)
     @sequence.add(cmd)
@@ -79,17 +90,23 @@ class CmdWrite < Command
     s << ' )'
     return s
   end
-  def compile
+  def compile(spool)
     s = ''
-    s << "output.newline();\n" if @newline
-    s << "output.set_color('#{@color}');\n"
+    s << "<br/>" if @newline
+
+    t = ''
     case @arg.kind
     when Token::WORD
-      s << "output.writer(vars.evaluate('#{@arg.value}'));"
+      t = "<?php echo $#{@arg.value} ?>"
     when Token::STRING
-      s << "output.writer('#{@arg.value}');"
+      t = @arg.value
     end
-    return s
+    t = "<font color='#{@color}'>#{t}</font>" if (@color)
+
+    s << t
+    spool << s
+    
+    return ''
   end
 end
 
@@ -104,11 +121,19 @@ class CmdExpr < Command
   end
   def print(pretty)
     s = super(pretty)
-    exp = @expression.collect { |t| t.value }.join(' ')
-    return "#{s}(#{@target},#{exp})"
+    e =   @expression.collect { |t| t.value }.join(' ')
+    return "#{s}(#{@target},#{e})"
   end
-  def compile
-    "vars.set('#{@target}',expr);"
+  def token_to_expr(token)
+    if token.kind == Token::WORD   # means variable!
+      '$' + token.value
+    else
+      token.value
+    end
+  end
+  def compile(spool)
+    e =   @expression.collect { |t| token_to_expr(t) }.join(' ')
+    "$#{@target} = #{e};"
   end
 end
 
@@ -122,7 +147,7 @@ class CmdVar < Command
     s = super(pretty)
     return "#{s}(#{@var},#{@type})"
   end
-  def compile
-    "vars.prepare('#{@var}','#{@type}');"
+  def compile(spool)
+    "$#{@var} = 0;"
   end
 end
