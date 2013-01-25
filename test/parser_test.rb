@@ -103,7 +103,7 @@ class ParserTest < Test::Unit::TestCase
       t << Token.new(Token::WORD, '1') << Token.new(Token::PUNCTION, '+')
       t << Token.new(Token::WORD, 'B-C') << Token.new(Token::DOT)
     end
-    assert_equal "PROGRAM(STANDARD)[EXPR(A,1 + B-C)]", @result
+    assert_equal "PROGRAM(STANDARD)[COMPUTE(A,EXPR(1 + B-C))]", @result
   end
   def test_simple_program
     parse <<-EOF
@@ -111,7 +111,7 @@ class ParserTest < Test::Unit::TestCase
       a = b + c.
       write: x, y.
     EOF
-    assert_equal "PROGRAM(TEST)[EXPR(A,B + C),WRITE( X color= ),WRITE( Y color= )]", @result
+    assert_equal "PROGRAM(TEST)[COMPUTE(A,EXPR(B + C)),WRITE( X color= ),WRITE( Y color= )]", @result
   end
   def test_data_declaration
     parse <<-EOF
@@ -119,6 +119,16 @@ class ParserTest < Test::Unit::TestCase
       data a type i.
     EOF
     assert_equal "PROGRAM(TEST)[VAR(A,I)]", @result
+  end
+  def test_parse_if
+    parse <<-EOF
+      program test.
+      data a type i.
+      if i > 1.
+        write 'Ahoj!'.
+      endif.
+    EOF
+    assert_equal "PROGRAM(TEST)[VAR(A,I),IF(I > 1,[WRITE( 'Ahoj! )],)]", @result
   end
   
   # negative tests...

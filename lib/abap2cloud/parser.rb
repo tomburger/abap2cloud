@@ -13,9 +13,23 @@ class Parser
     sequence(c, tokens)
     return c
   end
-  def self.sequence(parent, tokens)
+  def self.end_of_seq(tokens, stopword)
+    if stopword === ''
+      tokens.empty?
+    else
+      raise "Missing stopword #{stopword}" if tokens.empty?
+      token = tokens[0]
+      if check(token, Token::WORD, stopword)
+        remove(tokens, Token::WORD)
+        true
+      else
+        false
+      end
+    end
+  end
+  def self.sequence(parent, tokens, stopword = '')
     last_length = tokens.size + 1
-    while !tokens.empty?
+    while !end_of_seq(tokens, stopword) 
 
       # invariant - with each loop, there is less tokens
       raise "Seems like endless loop!" if tokens.size == last_length
@@ -39,11 +53,18 @@ class Parser
         remove(tokens, Token::WORD)
         c = variable(tokens)
         parent.add(c)
+      when check(token, Token::WORD, 'IF')
+        remove(tokens, Token::WORD)
+        e = expression(tokens)
+        c = CmdIf.new(e)
+        sequence(c, tokens, 'ENDIF')
+        remove(tokens, Token::DOT)
+        parent.add(c)
       else
         if check(tokens[1], Token::EQUAL)
           remove(tokens, Token::WORD)
           remove(tokens, Token::EQUAL)
-          c = expression(token.value, tokens)
+          c = compute(token.value, tokens)
           parent.add(c)
         else
           raise "Unknown command #{token}"
@@ -59,13 +80,16 @@ class Parser
     raise "Missing token #{kind}" if token == nil 
     raise "Expecting #{kind}, but #{token} found" if token.kind != kind
   end
-  def self.expression(target, tokens)
-    c = CmdExpr.new(target)
+  def self.expression(tokens)
+    a = []
     while token = tokens.shift
       break if token.kind == Token::DOT
-      c.add token
+      a << token
     end
-    return c
+    CmdExpression.new(a)
+  end
+  def self.compute(target, tokens)
+    CmdCompute.new(target, expression(tokens))
   end
   def self.variable(tokens)
     v = tokens.shift             # variable

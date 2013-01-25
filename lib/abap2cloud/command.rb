@@ -110,19 +110,15 @@ class CmdWrite < Command
   end
 end
 
-class CmdExpr < Command
-  def initialize(target)
+class CmdExpression < Command
+  def initialize(tokens)
     super('EXPR')
-    @target = target
-    @expression = []
-  end
-  def add(token)
-    @expression << token
+    @tokens = tokens
   end
   def print(pretty)
     s = super(pretty)
-    e =   @expression.collect { |t| t.value }.join(' ')
-    return "#{s}(#{@target},#{e})"
+    e = @tokens.collect { |t| t.value }.join(' ')
+    "#{s}(#{e})"
   end
   def token_to_expr(token)
     if token.kind == Token::WORD   # means variable!
@@ -132,8 +128,41 @@ class CmdExpr < Command
     end
   end
   def compile(spool)
-    e =   @expression.collect { |t| token_to_expr(t) }.join(' ')
+    @expression.collect { |t| token_to_expr(t) }.join(' ')
+  end
+end
+
+class CmdCompute < Command
+  def initialize(target, expression)
+    super('COMPUTE')
+    @target = target
+    @expression = expression
+  end
+  def print(pretty)
+    s = super(pretty)
+    e = @expression.print(pretty)
+    return "#{s}(#{@target},#{e})"
+  end
+  def compile(spool)
+    e = @expression.compile(spool)
     "$#{@target} = #{e};"
+  end
+end
+
+class CmdIf < Command
+  def initialize(expr)
+    super('IF')
+    @expression = expr
+    @true_part = CmdSequence.new
+  end
+  def add(cmd)
+    @true_part.add(cmd)
+  end
+  def print(pretty)
+    s = super(pretty)
+    e = @expression.print(pretty)
+    t = @true_part.print(pretty)
+    "#{s}(#{e},#{t},)"
   end
 end
 
