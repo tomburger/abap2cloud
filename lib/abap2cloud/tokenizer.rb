@@ -22,7 +22,7 @@ class Tokenizer
           end
         else
           case c
-          when /[\w\-\+]/
+          when /[\w\-\+\>\<]/
             word << c
           when /\s/
             if !word.empty?

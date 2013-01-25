@@ -124,11 +124,23 @@ class ParserTest < Test::Unit::TestCase
     parse <<-EOF
       program test.
       data a type i.
-      if i > 1.
+      if a > 1.
         write 'Ahoj!'.
       endif.
     EOF
-    assert_equal "PROGRAM(TEST)[VAR(A,I),IF(I > 1,[WRITE( 'Ahoj! )],)]", @result
+    assert_equal "PROGRAM(TEST)[VAR(A,I),IF(EXPR(A > 1),[WRITE( 'Ahoj!' color= )],)]", @result
+  end
+  def test_parse_if_else
+    parse <<-EOF
+      program test.
+      data a type i.
+      if a gt 1.
+        write 'Vetsi'.
+      else.
+        write 'Mensi'.
+      endif.
+    EOF
+    assert_equal "PROGRAM(TEST)[VAR(A,I),IF(EXPR(A GT 1),[WRITE( 'Vetsi' color= )],[WRITE( 'Mensi' color= )])]", @result
   end
   
   # negative tests...
@@ -147,5 +159,13 @@ class ParserTest < Test::Unit::TestCase
       EOF
     end
   end
-  
+  def test_if_without_end
+    assert_raise(RuntimeError) do
+      parse <<-EOF
+        program test.
+        if 5 gt 3.
+          write 'OK'.
+      EOF
+    end
+  end
 end

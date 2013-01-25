@@ -74,6 +74,14 @@ class TokenizerTest < Test::Unit::TestCase
     end
   end
   
+  def test_bool_exp
+    call { |l| l << "a > b" }
+    assert_equal 3, @tokens.size
+    assert_token 0, Token::WORD, 'A'
+    assert_token 1, Token::PUNCTION, '>'
+    assert_token 2, Token::WORD, 'B'
+  end
+
   def test_multiline_expression
     call do |l|
       l << "a = b"

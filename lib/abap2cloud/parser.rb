@@ -13,23 +13,23 @@ class Parser
     sequence(c, tokens)
     return c
   end
-  def self.end_of_seq(tokens, stopword)
-    if stopword === ''
-      tokens.empty?
+  def self.find_stopword(tokens, stopwords)
+    if stopwords.nil?
+      tokens.empty? ? 'END-OF-PROGRAM' : nil
     else
-      raise "Missing stopword #{stopword}" if tokens.empty?
+      raise "Missing one of stopwords #{stopwords.join(',')}" if tokens.empty?
       token = tokens[0]
-      if check(token, Token::WORD, stopword)
-        remove(tokens, Token::WORD)
-        true
+      if !stopwords.find_index { |s| check(token, Token::WORD, s) }
+        nil
       else
-        false
+        remove(tokens, Token::WORD)
+        token.value
       end
     end
   end
-  def self.sequence(parent, tokens, stopword = '')
+  def self.sequence(parent, tokens, stopwords = nil)
     last_length = tokens.size + 1
-    while !end_of_seq(tokens, stopword) 
+    while !(stopword = find_stopword(tokens, stopwords)) 
 
       # invariant - with each loop, there is less tokens
       raise "Seems like endless loop!" if tokens.size == last_length
@@ -55,10 +55,7 @@ class Parser
         parent.add(c)
       when check(token, Token::WORD, 'IF')
         remove(tokens, Token::WORD)
-        e = expression(tokens)
-        c = CmdIf.new(e)
-        sequence(c, tokens, 'ENDIF')
-        remove(tokens, Token::DOT)
+        c = if_command(tokens)
         parent.add(c)
       else
         if check(tokens[1], Token::EQUAL)
@@ -71,6 +68,7 @@ class Parser
         end
       end
     end
+    return stopword
   end
   def self.check(token, kind, value='')
     token.kind == kind && token.value == value
@@ -111,6 +109,18 @@ class Parser
       c.color = tokens.shift.value
     end
     remove(tokens, Token::DOT)
+    return c
+  end
+  def self.if_command(tokens)
+    e = expression(tokens)
+    c = CmdIf.new(e)
+    s = sequence(c, tokens, ['ELSE', 'ENDIF'])
+    remove(tokens, Token::DOT)
+    if s === 'ELSE'
+      c.startElse
+      sequence(c, tokens, ['ENDIF'])
+      remove(tokens, Token::DOT)
+    end
     return c
   end
   def self.remove_collons(old)

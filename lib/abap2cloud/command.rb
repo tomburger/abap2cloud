@@ -23,8 +23,8 @@ class CmdSequence < Command
     seq = @commands.collect { |c| c.print(pretty) }.join(pretty ? "\n" : ',')
     return pretty ? "[\n#{seq}\n]" : "[#{seq}]"
   end
-  def compile(spool)
-    @commands.collect { |c| c.compile(spool) }.join("\n")
+  def compile
+    @commands.collect { |c| c.compile }.join("\n")
   end
 end
 
@@ -40,28 +40,32 @@ class CmdProgram < Command
     s1 + s2
   end
   def compile
-    spool = []
-    s = @sequence.compile spool
+    s = @sequence.compile 
     return <<-EOF
 <?php
-      #{s}
-      ?><html><head>
-      <title>ABAP-to-Cloud</title>
-      <style>
-      .write { font-family: Courier; border: 1px solid black; background-color: silver; }
-      </style>
-      </head>
-      <body>
-      <h1>ABAP-to-Cloud</h1>
-      <hr/>
-      <div class="write">
-      #{spool.join("\n")}
-      </div>
-      </body>
-      </html>
-      <?
-
+$writer = array();
+#{s}
+?><html><head>
+<title>ABAP-to-Cloud</title>
+<style>
+.write { font-family: Courier; border: 1px solid black; background-color: silver; }
+</style>
+</head>
+<body>
+<h1>ABAP-to-Cloud</h1>
+<hr/>
+<div class="write">
+<?php
+$ix = 0;
+foreach($writer as $line) {
+  if ($ix > 0 && $line['newline']) echo '<br/>';
+  echo $line['value'] . ' ';
+  $ix++;
+}
 ?>
+</div>
+</body>
+</html>
 EOF
   end
   def add(cmd)
@@ -90,23 +94,17 @@ class CmdWrite < Command
     s << ' )'
     return s
   end
-  def compile(spool)
-    s = ''
-    s << "<br/>" if @newline
-
-    t = ''
+  def compile
+    s = 'array_push($writer, array('
+    s << "'newline' => #{@newline},"
+    s << "'color' => #{@color}," if @color
     case @arg.kind
     when Token::WORD
-      t = "<?php echo $#{@arg.value} ?>"
+      s << "'value' => $#{@arg.value}));"
     when Token::STRING
-      t = @arg.value
+      s << "'value' => '#{@arg.value}'));"
     end
-    t = "<font color='#{@color}'>#{t}</font>" if (@color)
-
-    s << t
-    spool << s
-    
-    return ''
+    return s
   end
 end
 
@@ -127,8 +125,8 @@ class CmdExpression < Command
       token.value
     end
   end
-  def compile(spool)
-    @expression.collect { |t| token_to_expr(t) }.join(' ')
+  def compile
+    @tokens.collect { |t| token_to_expr(t) }.join(' ')
   end
 end
 
@@ -143,8 +141,8 @@ class CmdCompute < Command
     e = @expression.print(pretty)
     return "#{s}(#{@target},#{e})"
   end
-  def compile(spool)
-    e = @expression.compile(spool)
+  def compile
+    e = @expression.compile
     "$#{@target} = #{e};"
   end
 end
@@ -154,15 +152,38 @@ class CmdIf < Command
     super('IF')
     @expression = expr
     @true_part = CmdSequence.new
+    @false_part = nil
   end
   def add(cmd)
-    @true_part.add(cmd)
+    if @false_part.nil?
+      @true_part.add(cmd)
+    else
+      @false_part.add(cmd)
+    end
+  end
+  def startElse
+    @false_part = CmdSequence.new
   end
   def print(pretty)
     s = super(pretty)
     e = @expression.print(pretty)
     t = @true_part.print(pretty)
-    "#{s}(#{e},#{t},)"
+    f = @false_part.nil? ? '' : @false_part.print(pretty)
+    "#{s}(#{e},#{t},#{f})"
+  end
+  def compile
+    s = []
+    s << 'if('
+    s << @expression.compile
+    s << '){'
+    s << @true_part.compile
+    s << '}'
+    if !@false_part.nil?
+      s << 'else {'
+      s << @false_part.compile
+      s << '}'
+    end
+    return s.join("\n")
   end
 end
 
@@ -176,7 +197,7 @@ class CmdVar < Command
     s = super(pretty)
     return "#{s}(#{@var},#{@type})"
   end
-  def compile(spool)
+  def compile
     "$#{@var} = 0;"
   end
 end
