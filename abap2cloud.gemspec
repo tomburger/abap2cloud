@@ -23,5 +23,5 @@ lib/abap2cloud.rb
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba')
-  s.add_runtime_dependency('gli','2.5.2')
+  s.add_runtime_dependency('gli')
 end
